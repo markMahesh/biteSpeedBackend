@@ -12,7 +12,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(express.json());
 
-app.use('/api', userRoutes);
+app.use('', userRoutes);
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
