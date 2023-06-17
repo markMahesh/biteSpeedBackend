@@ -1,25 +1,27 @@
 //contains the model files that define the data structures and interact with the database or other data sources
 
+import { RowDataPacket } from "mysql2";
+
 // export interface User {
 //     id: string;
 //     name: string;
 //     email: string;
 //     // Other user properties
 // }
-// export interface UserContact {
-//     id: number;
-//     phoneNumber?: String;
-//     email?: String;
-//     linkedId?: number;
-//     linkPrecedence: linkPrecedenceType;
-//     createdAt: number;
-//     updatedAt: number;
-//     deletedAt?: number;
-// }
-// export interface linkPrecedenceType {
-//     secondary: "secondary";
-//     primary: "primary";
-// }
+export interface UserContact extends RowDataPacket {
+    id: number;
+    phoneNumber?: String;
+    email?: String;
+    linkedId?: number;
+    linkPrecedence: linkPrecedenceType;
+    createdAt: number;
+    updatedAt: number;
+    deletedAt?: number;
+}
+export interface linkPrecedenceType {
+    secondary: "secondary";
+    primary: "primary";
+}
 
 // Methods to interact with the database or other data source
 // export const User = {
