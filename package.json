@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx ts-node src/index.ts",
-    "createTable": "npx ts-node src/database/createTable.ts"
+    "createTable": "npx ts-node src/database/contactTable.ts"
   },
   "keywords": [],
   "author": "",

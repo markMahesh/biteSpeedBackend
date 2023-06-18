@@ -1,5 +1,6 @@
 import { MySqlDB } from "./MySql";
 import { UserContact } from "../app/models/user";
+import { OkPacket } from "mysql2";
 
 
 export class ContactTable extends MySqlDB {
@@ -37,16 +38,17 @@ export class ContactTable extends MySqlDB {
             const query = `INSERT INTO ${this.tableName} (email,phoneNumber,linkedId,linkPrecedence,createdAt) VALUES (?, ?, ?, ?, ?)`;
             const values = [userContact.email, userContact.phoneNumber, userContact.linkedId, userContact.linkPrecedence, userContact.createdAt];
 
-            await this.connection.query(query, values);
+            const [insertResult] = await this.connection.query<OkPacket>(query, values);
             console.log('Entry added successfully');
 
+            return insertResult.insertId;
         } catch (error) {
             console.error('Error adding entry:', error);
         } finally {
             this.closeConnection();
         }
     }
-    async getEntry(user: UserContact, query?: string,) {
+    async getEntry(user: UserContact, inputQuery?: string,) {
         try {
             await this.connectToServer();
             this.connection = this.getConnection();
@@ -65,9 +67,39 @@ export class ContactTable extends MySqlDB {
             this.closeConnection();
         }
     }
+    async getAllLinkedContacts(email?: string, phoneNumber?: string): Promise<UserContact[] | undefined> {
+        try {
+            await this.connectToServer();
+            this.connection = this.getConnection();
+
+            const query = `SELECT * FROM ${this.tableName} WHERE phoneNumber = ? OR email = ?`;
+            const [rows] = await this.connection.query<UserContact[]>(query, [phoneNumber, email]);
+            return rows as unknown as UserContact[];
+        } catch (error) {
+            console.error('Error adding entry:', error);
+        } finally {
+            this.closeConnection();
+        }
+
+    }
+    async updateContact(userContact: UserContact) {
+        try {
+            await this.connectToServer();
+            this.connection = this.getConnection();
+
+            const updateQuery = `UPDATE ${this.tableName} SET linkedId = ?, linkPrecedence = ? WHERE id = ?`;
+
+            const [insertResult] = await this.connection.execute(updateQuery, [userContact.linkedId, userContact.linkPrecedence, userContact.id]);
+            console.log('Entry updated successfully');
+        } catch (error) {
+            console.error('Error adding entry:', error);
+        } finally {
+            this.closeConnection();
+        }
+    }
 }
 
-async function main() {
+async function xyz() {
     const contactTable = new ContactTable();
     await contactTable.createTable();
     const userContact = {
@@ -77,11 +109,10 @@ async function main() {
         "linkPrecedence": "primary",
         "createdAt": new Date()
     } as unknown as UserContact;
-    await contactTable.addEntry(userContact);
+    // await contactTable.addEntry(userContact);
     await contactTable.getEntry(userContact);
 }
-
-main().catch((error) => {
+xyz().catch((error) => {
     console.error('An error occurred while creating table:', error);
 });
-
+export const contactTable = new ContactTable();

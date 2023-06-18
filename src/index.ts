@@ -2,7 +2,7 @@
 
 import express, { Request, Response } from 'express';
 import userRoutes from '../src/routes/UserRoutes';
-import { mysqlDB } from './database/MySql';
+
 
 const app = express();
 const port = 3000;

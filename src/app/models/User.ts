@@ -2,36 +2,31 @@
 
 import { RowDataPacket } from "mysql2";
 
-// export interface User {
-//     id: string;
-//     name: string;
-//     email: string;
-//     // Other user properties
-// }
 export interface UserContact extends RowDataPacket {
-    id: number;
-    phoneNumber?: String;
-    email?: String;
+    id?: number;
+    phoneNumber?: string;
+    email?: string;
     linkedId?: number;
-    linkPrecedence: linkPrecedenceType;
-    createdAt: number;
-    updatedAt: number;
-    deletedAt?: number;
+    linkPrecedence: string;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt?: Date;
 }
-export interface linkPrecedenceType {
-    secondary: "secondary";
-    primary: "primary";
+export const LinkPrecedenceType = {
+    secondary: "secondary",
+    primary: "primary"
 }
 
-// Methods to interact with the database or other data source
-// export const User = {
-//     findById: (id: string) => {
-//         // Logic to fetch user by ID
-//         // Returns a User object
-//     },
-//     create: (userData: Partial<UserContact>) => {
-//         // Logic to create a new user
-//         // Returns the newly created User object
-//     },
-//     // Add more methods for other CRUD operations
-// };
+export interface identifyInputParams {
+    email?: string;
+    phoneNumber?: string;
+}
+
+export interface identifyResponse {
+    contact: {
+        primaryContatctId: number;
+        emails: string[]; // first element being email of primary contact 
+        phoneNumbers: string[]; // first element being phoneNumber of primary contact
+        secondaryContactIds: number[]; // Array of all Contact IDs that are "secondary" to the primary contact
+    };
+}
