@@ -34,8 +34,8 @@ class UserService {
                 linkPrecedence: LinkPrecedenceType.primary,
                 createdAt: new Date(),
                 updatedAt: new Date(),
-            };
-            const insertId = await contactTable.addEntry(newContact as unknown as UserContact);
+            } as unknown as UserContact;
+            const insertId = await contactTable.addEntry(newContact);
             return {
                 "contact": {
                     "primaryContatctId": (insertId) ? insertId : -1,
@@ -71,15 +71,31 @@ class UserService {
                     await contactTable.updateContact(primaryLinkedContactArray[ind]);
                 }
             }
+            else if (!(isUserContactPresentInDB(input.email, input.phoneNumber, userContacts))) {
+                //add the new row in DB against request if new information is there
+
+                console.log("add entry in DB");
+                const requsetedUserContact = {
+                    phoneNumber: input.phoneNumber,
+                    email: input.email,
+                    linkedId: userContacts[0].id,
+                    linkPrecedence: LinkPrecedenceType.secondary,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                } as unknown as UserContact;
+
+                await contactTable.addEntry(requsetedUserContact);
+                console.log("Requested User Contact Added");
+
+            }
             //main logic to extract all the connected links
             let primaryLinkedContact: UserContact = {} as unknown as UserContact;
             let emails = new Set<string>;
             let phoneNumbers = new Set<string>;
             let secondaryContactIds = new Set<Number>
-            let index = 0;
             console.log('set = ', userContactSet);
 
-            while (index < userContacts.length) {
+            while (userContacts.length) {
                 console.log("length = ", userContacts.length)
                 if (userContacts[0].linkPrecedence == LinkPrecedenceType.primary)
                     primaryLinkedContact = userContacts[0];
@@ -103,7 +119,8 @@ class UserService {
                 }
                 // userContacts = userContacts?.concat(newUserContacts);
                 userContacts = userContacts.slice(1);
-                index++;
+                console.log('set:----> ', userContactSet);
+
             }
             if (primaryLinkedContact.email && emails.has(primaryLinkedContact.email))
                 emails.delete(primaryLinkedContact.email)
@@ -133,6 +150,35 @@ function hasObject(obj: UserContact, set: Set<UserContact>): boolean {
 
 export const userService = new UserService();
 
-function getAllLinkedContacts(email: string | undefined, phoneNumber: string | undefined): UserContact[] | PromiseLike<UserContact[]> {
-    throw new Error("Function not implemented.");
+function isUserContactPresentInDB(email: string | undefined, phoneNumber: string | undefined, userContacts: UserContact[]) {
+    for (const userContact of userContacts) {
+        // email is null 
+        //          - userContact == null
+        //          - userContact = "adsafa@gmail.com"
+        // email is "abc@gmail.com"
+        //          - userContact == null
+        //          - userContact = "adsafa@gmail.com"
+        let isEmailMatched: boolean;
+        let isPhoneMatched: boolean;
+        if (email) {
+            isEmailMatched = (userContact.email === email);
+        }
+        else {
+            isEmailMatched = true;
+        }
+        if (phoneNumber) {
+            isPhoneMatched = (userContact.phoneNumber === phoneNumber);
+        }
+        else {
+            isPhoneMatched = true;
+        }
+        console.log('userContact.email: ', userContact.email, '  matching with email: ', email);
+        console.log('userContact.phoneNumber: ', userContact.phoneNumber, '  matching with phoneNumber: ', phoneNumber);
+
+        console.log(isEmailMatched, '<-email || phone ->', isPhoneMatched)
+        if (isPhoneMatched && isEmailMatched)
+            return true;
+    }
+    return false;
 }
+

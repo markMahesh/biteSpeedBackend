@@ -18,3 +18,15 @@ biteSpeedBackend Service
 2. run `npm install` (it installs all the required packages)
 3. run `npm run createTable` (it will create the table in sql server)
 4. run `npm run start` (it will start the server at [localhost](http://localhost:3000/))
+5. To hit the api you can use `http://localhost:3000/identify/` endpoint. - OR  
+    Curl command to hit the api: `curl --location 'http://localhost:3000/identify/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"email": "mcfly@hillvalley.edu",
+	"phoneNumber": null
+}'`
+
+# Tools and their Versions
+
+1. Node.js v18.15.0.
+2. Docker version 20.10.16
