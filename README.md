@@ -14,11 +14,12 @@ biteSpeedBackend Service
 
 # Steps to Start the service
 
-1. Setup Docker
-2. run `npm install` (it installs all the required packages)
-3. run `npm run createTable` (it will create the table in sql server)
-4. run `npm run start` (it will start the server at [localhost](http://localhost:3000/))
-5. To hit the api you can use `http://localhost:3000/identify/` endpoint. - OR  
+1. Setup Docker for MySQL database.
+2. Run the service locally by following next steps:
+   a. run `npm install` (it installs all the required packages)
+   b. run `npm run createTable` (it will create the table in sql server)
+   c. run `npm run start` (it will start the server at [localhost](http://localhost:3000/))
+3. To hit the api in Postman where you can use `http://localhost:3000/identify/` endpoint. - OR  
     Curl command to hit the api: `curl --location 'http://localhost:3000/identify/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
