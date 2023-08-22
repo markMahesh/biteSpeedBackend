@@ -5,7 +5,7 @@ import userRoutes from './routes/UserRoutes';
 
 
 const app = express();
-const port = 3000;
+const port = 3010;
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello, world!');
