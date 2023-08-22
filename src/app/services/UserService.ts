@@ -1,5 +1,5 @@
 import { contactTable } from "../../database/contactTable";
-import { UserContact, identifyInputParams, identifyResponse, LinkPrecedenceType } from "../models/user";
+import { UserContact, identifyInputParams, identifyResponse, LinkPrecedenceType } from "../models/User";
 
 const Queries = {
     contactHavingMobileAndEmail: ``,

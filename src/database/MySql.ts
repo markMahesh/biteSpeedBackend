@@ -1,18 +1,25 @@
-import mysql, { Connection, FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+dotenv.config(); 
 export class MySqlDB {
-    protected connection: Connection | undefined = undefined;
+    protected connection: mysql.Connection | undefined = undefined;
+    private MySqlConfig: any;
+
+    constructor(){
+        this.MySqlConfig = {
+            "host": process.env.MYSQL_HOST,
+            "port": process.env.MYSQL_PORT,
+            "user": process.env.MYSQL_USER,
+            "password": process.env.MYSQL_PASS,
+            "database": process.env.MYSQL_DATABASE,
+        }
+        console.log('mysqlconfig:',this.MySqlConfig)
+    }
 
     async connectToServer(): Promise<void> {
         try {
-            this.connection = await mysql.createConnection({
-                host: 'localhost',
-                port: 3306,
-                user: 'root',
-                password: 'mahesh',
-                database: 'biteSpeedDB',
-            });
-            console.log('Connected to the database');
+            this.connection = await mysql.createConnection(this.MySqlConfig);
+            console.log('Connected to the database SuccessFully');
         } catch (error) {
             console.error('Failed to connect to the database', error);
         }
@@ -29,7 +36,7 @@ export class MySqlDB {
         }
     }
 
-    getConnection = (): Connection => {
+    getConnection = (): mysql.Connection => {
         if (!this.connection) {
             throw new Error('Database not connected');
         }
@@ -37,4 +44,4 @@ export class MySqlDB {
     };
 }
 
-export const mysqlDB = new MySqlDB();
+// export const mysqlDB = new MySqlDB();

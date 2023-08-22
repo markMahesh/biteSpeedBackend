@@ -1,7 +1,6 @@
 import { MySqlDB } from "./MySql";
-import { UserContact } from "../app/models/user";
+import { UserContact } from "../app//models/User";
 import { OkPacket } from "mysql2";
-
 
 export class ContactTable extends MySqlDB {
     protected tableName = 'Contacts';
@@ -99,20 +98,20 @@ export class ContactTable extends MySqlDB {
     }
 }
 
-async function xyz() {
-    const contactTable = new ContactTable();
-    await contactTable.createTable();
-    const userContact = {
-        "phoneNumber": "919191",
-        "email": "george@hillvalley.edu",
-        "linkedId": null,
-        "linkPrecedence": "primary",
-        "createdAt": new Date()
-    } as unknown as UserContact;
-    // await contactTable.addEntry(userContact);
-    await contactTable.getEntry(userContact);
-}
-xyz().catch((error) => {
-    console.error('An error occurred while creating table:', error);
-});
+// async function xyz() {
+//     const contactTable = new ContactTable();
+//     await contactTable.createTable();
+//     const userContact = {
+//         "phoneNumber": "919191",
+//         "email": "george@hillvalley.edu",
+//         "linkedId": null,
+//         "linkPrecedence": "primary",
+//         "createdAt": new Date()
+//     } as unknown as UserContact;
+//     // await contactTable.addEntry(userContact);
+//     await contactTable.getEntry(userContact);
+// }
+// xyz().catch((error) => {
+//     console.error('An error occurred while creating table:', error);
+// });
 export const contactTable = new ContactTable();

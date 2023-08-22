@@ -1,7 +1,7 @@
 // this file handles the incomming requests, interact with models and send response
-
 import { Request, Response } from 'express';
 import { userService } from '../services/UserService';
+// FUTURE SCOPE: GET USER METHOD
 
 // export const getUser = (req: Request, res: Response) => {
 //     // Controller method for handling GET /users/:id
