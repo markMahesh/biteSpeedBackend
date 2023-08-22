@@ -2,6 +2,15 @@
 
 biteSpeedBackend Service
 
+# Endpoint
+Endpoint: https://bitespeedidentityreconciliation.onrender.com/identify
+Curl command to hit the api: `curl --location 'https://bitespeedidentityreconciliation.onrender.com/identify' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "mcfly@hillvalley.edu",
+    "phoneNumber": null
+}'`
+
 # Setup for Docker
 
 1. Install Docker Desktop in your machine(macOS) [ref](https://docs.docker.com/desktop/install/mac-install/)
